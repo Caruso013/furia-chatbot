@@ -1,12 +1,77 @@
-# React + Vite
+# FURIA E-Sports Chatbot
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
+The FURIA E-Sports Chatbot is a web-based chatbot designed to provide real-time information about FURIA E-Sports teams, including news about their games and tournaments. The bot responds dynamically to user inputs, offering personalized responses based on topics such as CS2, LoL, Valorant, and Kings League.
 
-Currently, two official plugins are available:
+## Features
+- Dynamic responses based on the user's input, including topics such as CS2, LoL, Valorant, and Kings League.
+- A typing indicator to simulate bot activity and create a more interactive user experience.
+- Smooth scrolling of the chat for a better visual experience.
+- Customizable responses for different topics in FURIA E-Sports.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
+- **Frontend**: React.js with TypeScript
+- **Styling**: TailwindCSS for responsive design
+- **State Management**: React `useState` and `useEffect` hooks
+- **Data**: Static responses stored in a separate `responses.ts` file
 
-## Expanding the ESLint configuration
+## Setup & Installation
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. **Clone the repository**:
+    ```bash
+    git clone https://github.com/yourusername/furia-chatbot.git
+    cd furia-chatbot
+    ```
+
+2. **Install dependencies**:
+    If you have `npm` or `yarn` installed, you can use either to install dependencies.
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
+
+3. **Run the development server**:
+    Start the development server to see the chatbot in action.
+    ```bash
+    npm start
+    # or
+    yarn start
+    ```
+
+4. **Open your browser**:
+    Once the development server is running, open your browser and go to:
+    ```bash
+    http://localhost:3000
+    ```
+
+## Usage
+
+1. Type any message related to FURIA E-Sports (e.g., "CS2", "LoL", "Valorant", "Kings League") into the input box.
+2. The bot will dynamically select a response based on the topic of your input.
+3. The bot will simulate typing and then reply with a message related to the topic you mentioned.
+
+## How It Works
+
+The `FURIA E-Sports Chatbot` uses a list of predefined responses for different topics in `responses.ts`. Based on user input, the bot determines the relevant topic (e.g., CS2, LoL, Valorant, or Kings League) and returns a random response from the corresponding list.
+
+- **`getRandomResponse` function**: Determines the appropriate response based on the user's input.
+- **`Message` structure**: Defines the format of each message, distinguishing between user and bot messages.
+
+## Example Usage
+
+1. **User input**: "Tell me about FURIA CS2."
+2. **Bot reply**: "FURIA CS2 won their last match against MIBR!"
+
+## Contributing
+
+Feel free to fork the repository, make changes, and submit pull requests.
+
+### How to add new topics and responses:
+1. Open the `responses.ts` file.
+2. Add a new entry to the `botResponses` object with the name of the topic and a list of possible responses.
+3. Update the chatbot's logic to support new topics based on the user input.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
