@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { getRandomLocalResponse } from '../data/responses';
-
+import cs2Responses from '../data/cs2Responses.json';
+import { getRandomLocalResponse } from '../data/responses';  
 interface Message {
   text: string;
   sender: 'user' | 'bot';
+}
+
+interface FuriaResponse {
+  question: string;
+  answer: string;
 }
 
 const Chat: React.FC = () => {
@@ -12,13 +17,9 @@ const Chat: React.FC = () => {
   const [typing, setTyping] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
 
-  // Detecta o tópico com base nas palavras-chave
   const detectTopic = (text: string): keyof typeof import('../data/responses').botResponses => {
     const lowerText = text.toLowerCase();
     if (lowerText.includes('cs2')) return 'cs2';
-    if (lowerText.includes('lol')) return 'lol';
-    if (lowerText.includes('valorant')) return 'valorant';
-    if (lowerText.includes('kings league')) return 'kingsleague';
     return 'default';
   };
 
@@ -30,9 +31,14 @@ const Chat: React.FC = () => {
     setInput('');
     setTyping(true);
 
-    setTimeout(() => {
+    setTimeout(async () => {
       const topic = detectTopic(input);
-      const botReply = getRandomLocalResponse(topic);
+      let botReply = getRandomLocalResponse(topic);
+
+      const response = cs2Responses.find((item: FuriaResponse) => item.question.toLowerCase() === input.toLowerCase());
+      if (response) {
+        botReply = response.answer;
+      }
 
       const botMessage: Message = { text: botReply, sender: 'bot' };
       setMessages((prev) => [...prev, botMessage]);
