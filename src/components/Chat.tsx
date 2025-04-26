@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { getRandomResponse } from '../data/responses';
+import { getRandomLocalResponse, getAIResponseFromAPI } from '../data/responses';
 
 interface Message {
   text: string;
@@ -12,27 +12,33 @@ const Chat: React.FC = () => {
   const [typing, setTyping] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
 
-  const handleSend = () => {
+  const detectTopic = (text: string): keyof typeof import('../data/responses').botResponses => {
+    const lowerText = text.toLowerCase();
+    if (lowerText.includes('cs2')) return 'cs2';
+    if (lowerText.includes('lol')) return 'lol';
+    if (lowerText.includes('valorant')) return 'valorant';
+    if (lowerText.includes('kings league')) return 'kingsleague';
+    return 'default';
+  };
+
+  const handleSend = async () => {
     if (!input.trim()) return;
-    const userMessage: Message = { text: input, sender: 'user' }; 
+
+    const userMessage: Message = { text: input, sender: 'user' };
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setTyping(true);
 
-    setTimeout(() => {
-      let topic = 'default'; 
-  
-      if (input.toLowerCase().includes('cs2')) {
-        topic = 'cs2';
-      } else if (input.toLowerCase().includes('lol')) {
-        topic = 'lol';
-      } else if (input.toLowerCase().includes('valorant')) {
-        topic = 'valorant';
-      } else if (input.toLowerCase().includes('kings league')) {
-        topic = 'kingsleague';
+    setTimeout(async () => {
+      const topic = detectTopic(input);
+      let botReply = getRandomLocalResponse(topic);
+
+      // Preparado para integrar API futuramente
+      const apiReply = await getAIResponseFromAPI(input);
+      if (apiReply) {
+        botReply = apiReply;
       }
-  
-      const botReply = getRandomResponse(topic);
+
       const botMessage: Message = { text: botReply, sender: 'bot' };
       setMessages((prev) => [...prev, botMessage]);
       setTyping(false);

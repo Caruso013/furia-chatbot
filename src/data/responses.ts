@@ -1,29 +1,40 @@
 export const botResponses = {
   cs2: [
-    "A FURIA CS2 venceu a última partida contra a MIBR!",
-    "Fique ligado! A FURIA joga CS2 hoje às 18h!",
-    "Sabia que a FURIA já representou o Brasil no Major de CS2?",
+    "A FURIA brilhou no último campeonato de CS2!",
+    "Você viu a última jogada da FURIA no CS2? Sensacional!",
+    "A equipe de CS2 da FURIA está em ótima fase!",
   ],
   lol: [
-    "No LoL, a FURIA está se preparando para o próximo split do CBLOL.",
-    "FURIA LoL teve uma grande vitória contra a paiN na última semana!",
-    "Você acompanha o desempenho do Tutsz no Mid? Ele está em ótima fase!",
+    "FURIA no LoL vem forte para o próximo CBLOL!",
+    "O mid laner da FURIA está fazendo história no LoL!",
+    "Ansioso para ver a FURIA no próximo confronto de LoL?",
   ],
   valorant: [
-    "FURIA Valorant jogará contra a LOUD na próxima rodada!",
-    "Saiba tudo sobre os treinos intensos da line de Valorant!",
-    "Você viu o clutch do Quick no último jogo da FURIA?",
+    "A line de Valorant da FURIA está treinando pesado!",
+    "Você viu aquele clutch absurdo da FURIA no Valorant?",
+    "FURIA x LOUD vai ser insano no Valorant!",
   ],
   kingsleague: [
-    "FURIA está dominando a Kings League com seu time ousado!",
-    "O time da Kings League da FURIA tem um estilo agressivo e rápido.",
-    "Hoje tem jogo da Kings League! Não perca a transmissão!",
+    "A FURIA está dominando a Kings League!",
+    "O estilo agressivo da FURIA na Kings League é único!",
+    "Hoje tem FURIA na Kings League, vamos torcer!",
+  ],
+  default: [
+    "Que bacana! A FURIA está sempre evoluindo!",
+    "Me fala mais! Adoro conversar sobre a FURIA!",
+    "A FURIA representa a garra do Brasil!",
   ],
 };
-export const getRandomResponse = (topic: string) => {
-  const responses = botResponses[topic];
-  if (responses && responses.length > 0) {
-    return responses[Math.floor(Math.random() * responses.length)];
+
+export const getRandomLocalResponse = (topic: keyof typeof botResponses) => {
+  const responses = botResponses[topic] || botResponses.default;
+  return responses[Math.floor(Math.random() * responses.length)];
+};
+
+export const getAIResponseFromAPI = async (message: string): Promise<string> => {
+  try {
+    return `Simulando IA real: você falou sobre "${message}"!`;
+  } catch (error) {
+    return "Desculpe, houve um problema ao tentar buscar a resposta.";
   }
-  return "Desculpe, não tenho informações sobre isso no momento.";
 };
