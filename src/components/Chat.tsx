@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { getRandomLocalResponse, getAIResponseFromAPI } from '../data/responses';
+import { getRandomLocalResponse } from '../data/responses';
 
 interface Message {
   text: string;
@@ -12,6 +12,7 @@ const Chat: React.FC = () => {
   const [typing, setTyping] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
 
+  // Detecta o tópico com base nas palavras-chave
   const detectTopic = (text: string): keyof typeof import('../data/responses').botResponses => {
     const lowerText = text.toLowerCase();
     if (lowerText.includes('cs2')) return 'cs2';
@@ -29,15 +30,9 @@ const Chat: React.FC = () => {
     setInput('');
     setTyping(true);
 
-    setTimeout(async () => {
+    setTimeout(() => {
       const topic = detectTopic(input);
-      let botReply = getRandomLocalResponse(topic);
-
-      // Preparado para integrar API futuramente
-      const apiReply = await getAIResponseFromAPI(input);
-      if (apiReply) {
-        botReply = apiReply;
-      }
+      const botReply = getRandomLocalResponse(topic);
 
       const botMessage: Message = { text: botReply, sender: 'bot' };
       setMessages((prev) => [...prev, botMessage]);
@@ -56,14 +51,14 @@ const Chat: React.FC = () => {
   return (
     <div className="w-full max-w-xl p-4 rounded-xl shadow-2xl bg-white dark:bg-furiaBlack text-furiaBlack dark:text-furiaWhite relative">
       <div className="text-xl font-bold mb-2">FURIA Bot</div>
-      <div ref={chatRef} className="h-96 overflow-y-auto space-y-2 mb-4">
+      <div ref={chatRef} className="h-96 overflow-y-auto space-y-2 mb-4 flex flex-col">
         {messages.map((msg, i) => (
           <div
             key={i}
             className={`p-3 rounded-xl max-w-[80%] animate-fadeIn ${
               msg.sender === 'user'
                 ? 'self-end bg-amber-300 text-black ml-auto'
-                : 'self-start bg-gray-200 dark:bg-gray-700'
+                : 'self-start bg-gray-200 dark:bg-gray-700 text-black dark:text-white'
             }`}
           >
             {msg.text}

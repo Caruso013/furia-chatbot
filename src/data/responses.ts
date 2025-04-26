@@ -1,40 +1,27 @@
 export const botResponses = {
   cs2: [
-    "A FURIA brilhou no último campeonato de CS2!",
-    "Você viu a última jogada da FURIA no CS2? Sensacional!",
-    "A equipe de CS2 da FURIA está em ótima fase!",
+    'A FURIA está dominando no CS2, fique de olho nas partidas!',
+    'Sabia que a FURIA tem um dos melhores elencos no CS2? Confira mais!',
   ],
   lol: [
-    "FURIA no LoL vem forte para o próximo CBLOL!",
-    "O mid laner da FURIA está fazendo história no LoL!",
-    "Ansioso para ver a FURIA no próximo confronto de LoL?",
+    'A FURIA está arrasando no League of Legends!',
+    'O time da FURIA no LOL está em alta, eles têm grandes chances neste campeonato!',
   ],
   valorant: [
-    "A line de Valorant da FURIA está treinando pesado!",
-    "Você viu aquele clutch absurdo da FURIA no Valorant?",
-    "FURIA x LOUD vai ser insano no Valorant!",
+    'A FURIA no Valorant está surpreendendo a todos!',
+    'Não perca os próximos jogos da FURIA no Valorant, são imperdíveis!',
   ],
   kingsleague: [
-    "A FURIA está dominando a Kings League!",
-    "O estilo agressivo da FURIA na Kings League é único!",
-    "Hoje tem FURIA na Kings League, vamos torcer!",
+    'A FURIA tem mostrado um desempenho incrível na Kings League!',
+    'Você já viu a performance da FURIA na Kings League? Impressionante!',
   ],
   default: [
-    "Que bacana! A FURIA está sempre evoluindo!",
-    "Me fala mais! Adoro conversar sobre a FURIA!",
-    "A FURIA representa a garra do Brasil!",
+    'Oi! Como posso te ajudar? Fale sobre a FURIA ou qualquer outro jogo!',
   ],
 };
 
 export const getRandomLocalResponse = (topic: keyof typeof botResponses) => {
-  const responses = botResponses[topic] || botResponses.default;
-  return responses[Math.floor(Math.random() * responses.length)];
-};
-
-export const getAIResponseFromAPI = async (message: string): Promise<string> => {
-  try {
-    return `Simulando IA real: você falou sobre "${message}"!`;
-  } catch (error) {
-    return "Desculpe, houve um problema ao tentar buscar a resposta.";
-  }
+  const responses = botResponses[topic];
+  const randomIndex = Math.floor(Math.random() * responses.length);
+  return responses[randomIndex];
 };
