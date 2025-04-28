@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Chat from './components/Chat';
 import { motion } from 'framer-motion';
 
+const furiaLogo = "/logo-furia.svg";
+
 function App() {
   const [darkMode, setDarkMode] = useState(false);
 
@@ -13,11 +15,7 @@ function App() {
         darkMode ? 'bg-furiaBlack text-furiaWhite' : 'bg-furiaWhite text-furiaBlack'
       }`}
     >
-      <h1 className="text-4xl font-bold text-amber-300 mb-8 drop-shadow-lg">
-        FURIA E-Sports Chatbot
-      </h1>
-
-      <div className="relative w-full max-w-2xl p-6 bg-white dark:bg-gray-800 rounded-3xl shadow-2xl border border-gray-300 dark:border-gray-700 backdrop-blur-lg">
+      <div>
         <Chat />
       </div>
 
