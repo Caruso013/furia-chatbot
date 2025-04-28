@@ -1,14 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { botResponses } from "../data/responses";
 
-const furiaLogo = "/logo-furia.svg";
+const furiaLogo = "/logo-furia.svg"; 
 
 interface Message {
   text: string;
   sender: "user" | "bot";
 }
 
-export function Chat() {
+interface ChatProps {
+  darkMode: boolean;
+}
+
+export function Chat({ darkMode }: ChatProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -77,7 +81,7 @@ export function Chat() {
     setIsTyping(true);
 
     setTimeout(() => {
-      const botResponse = "Olá esse é um canal de comunicação da FURIA, bem vindo Furioso, como podemos te ajudar com informações do nosso time de CS";
+      const botResponse = "Olá esse é um canal de comunicação da FURIA, bem-vindo Furioso, como podemos te ajudar com informações do nosso time de CS?";
       setMessages((prev) => [...prev, { text: botResponse, sender: "bot" }]);
       setIsTyping(false);
       setHasStartedConversation(true);
@@ -85,23 +89,45 @@ export function Chat() {
   };
 
   return (
-    <div className="flex justify-center bg-white rounded-2xl shadow-2xl p-4 relative">
+    <div
+      className={`flex justify-center p-4 transition-colors duration-500 ${
+        darkMode ? "bg-[#1C1C1C] text-furiaWhite" : "bg-furiaWhite text-furiaBlack"
+      }`}
+    >
       <div className="w-full max-w-md bg-transparent rounded-2xl shadow-2xl p-4 relative">
         <div className="flex justify-center mb-4">
-          <h1 className="text-4xl font-bold text-black-300 mb-8 drop-shadow-lg flex items-center gap-4">
-            <img src={furiaLogo} alt="FURIA Logo" className="w-16 h-16" />
+          <h1 className="text-4xl font-bold mb-8 drop-shadow-lg flex items-center gap-4">
+            <img
+              src={furiaLogo}
+              alt="FURIA Logo"
+              className={`w-16 h-16 ${darkMode ? "invert" : ""}`}
+            />
             Chatbot
           </h1>
         </div>
 
-        <div className="overflow-y-auto max-h-[500px] space-y-4 p-2">
+        <div
+          className={`overflow-y-auto max-h-[500px] space-y-4 p-2 rounded-xl ${darkMode ? "bg-[#1C1C1C] text-furiaWhite" : "bg-white text-furiaBlack"}`}
+        >
           {messages.map((msg, index) => (
             <div key={index} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
               <div className="flex items-center gap-2 max-w-[75%]">
                 {msg.sender === "bot" && (
-                  <img src={furiaLogo} alt="Bot Avatar" className="w-8 h-8" />
+                  <img
+                    src={furiaLogo}
+                    alt="Bot Avatar"
+                    className={`w-8 h-8 ${darkMode ? "invert" : ""}`} 
+                  />
                 )}
-                <div className={`p-3 rounded-xl text-sm ${msg.sender === "user" ? "bg-yellow-400 text-black" : "bg-gray-200 dark:bg-gray-700 dark:text-white"}`}>
+                <div
+                  className={`p-3 rounded-xl text-sm ${
+                    msg.sender === "user"
+                      ? "bg-yellow-400 text-black"
+                      : darkMode
+                      ? "bg-[#DAA520] text-black" 
+                      : "bg-gray-200 text-black"
+                  }`}
+                >
                   {msg.text}
                 </div>
               </div>
@@ -109,7 +135,11 @@ export function Chat() {
           ))}
           {isTyping && (
             <div className="flex justify-start items-center gap-2">
-              <img src={furiaLogo} alt="Bot Typing" className="w-8 h-8 animate-pulse" />
+              <img
+                src={furiaLogo}
+                alt="Bot Typing"
+                className={`w-8 h-8 animate-pulse ${darkMode ? "invert" : ""}`} 
+              />
               <div className="p-3 bg-gray-200 dark:bg-gray-700 dark:text-white rounded-xl text-sm">
                 Digitando...
               </div>
@@ -130,7 +160,7 @@ export function Chat() {
         )}
 
         {hasStartedConversation && (
-          <form onSubmit={handleSubmit} className="mt-4 flex gap-2 transition-opacity opacity-100">
+          <form onSubmit={handleSubmit} className="mt-4 flex gap-2">
             <input
               type="text"
               value={input}

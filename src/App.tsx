@@ -16,7 +16,7 @@ function App() {
       }`}
     >
       <div>
-        <Chat />
+        <Chat darkMode={darkMode} />
       </div>
 
       <motion.div
