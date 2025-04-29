@@ -28,32 +28,51 @@ export function Chat({ darkMode }: ChatProps) {
   }, [messages]);
 
   const initialMessage = "Olá, tudo bem?";
+  function levenshtein(a: string, b: string): number {
+    const matrix: number[][] = [];
+  
+    for (let i = 0; i <= b.length; i++) {
+      matrix[i] = [i];
+    }
+    for (let j = 0; j <= a.length; j++) {
+      matrix[0][j] = j;
+    }
+    for (let i = 1; i <= b.length; i++) {
+      for (let j = 1; j <= a.length; j++) {
+        if (b.charAt(i - 1) === a.charAt(j - 1)) {
+          matrix[i][j] = matrix[i - 1][j - 1];
+        } else {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j - 1] + 1, // substituição
+            matrix[i][j - 1] + 1,     // inserção
+            matrix[i - 1][j] + 1      // deleção
+          );
+        }
+      }
+    }
+    return matrix[b.length][a.length];
+  }
 
   function getBestResponse(userInput: string): string {
-    const normalizedInput = userInput.toLowerCase();
+    const normalizedInput = userInput.toLowerCase().trim();
     let bestMatch = "";
-    let highestScore = 0;
-
+    let highestSimilarity = 0;
+  
     for (const { question, answer } of botResponses) {
-      const keywords = question.toLowerCase().split(" ");
-      let score = 0;
-
-      keywords.forEach((word) => {
-        if (normalizedInput.includes(word)) {
-          score += 1;
-        }
-      });
-
-      if (score > highestScore) {
-        highestScore = score;
+      const normalizedQuestion = question.toLowerCase().trim();
+      const distance = levenshtein(normalizedInput, normalizedQuestion);
+      const maxLength = Math.max(normalizedInput.length, normalizedQuestion.length);
+      const similarity = maxLength === 0 ? 0 : 1 - distance / maxLength;
+  
+      if (similarity > highestSimilarity) {
+        highestSimilarity = similarity;
         bestMatch = answer;
       }
     }
-
-    if (highestScore > 0) {
+    if (highestSimilarity >= 0.5) {
       return bestMatch;
     }
-
+  
     return "Desculpe, não encontrei uma resposta exata para sua pergunta.";
   }
 
@@ -166,8 +185,7 @@ export function Chat({ darkMode }: ChatProps) {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Digite sua mensagem..."
-              className="flex-1 p-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-            />
+              className={`flex-1 p-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400`}/>
             <button
               type="submit"
               className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-6 rounded-xl transition"
@@ -182,3 +200,7 @@ export function Chat({ darkMode }: ChatProps) {
 }
 
 export default Chat;
+function levenshtein(normalizedInput: string, normalizedQuestion: string) {
+  throw new Error("Function not implemented.");
+}
+
